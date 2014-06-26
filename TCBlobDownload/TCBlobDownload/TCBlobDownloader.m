@@ -259,9 +259,6 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
 {
     self.state = TCBlobDownloadStateDone;
     
-    [self.file writeData:self.receivedDataBuffer];
-    [self.receivedDataBuffer setData:nil];
-    
     [self notifyFromCompletionWithSuccess:YES pathToFile:self.pathToFile];
 }
 
@@ -328,6 +325,9 @@ NSString * const TCHTTPStatusCode = @"httpStatus";
             self.state = TCBlobDownloadStateCancelled;
         }
     }
+
+    [self.file writeData:self.receivedDataBuffer];
+    [self.receivedDataBuffer setData:nil];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.completeBlock) {
